@@ -1,0 +1,2 @@
+seed,optimization_mode,dataset,average_train_accuracy,baseline_accuracy,percent_better_than_baseline,num_better_than_baseline,total_separators,average_test_accuracy,baseline_test_accuracy
+5,random_with_context,sst5,0.2573,0.2656,63.12,101,160,0.3875,0.2383

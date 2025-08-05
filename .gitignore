@@ -6,6 +6,31 @@ __pycache__/
 # C extensions
 *.so
 
+trial_main.py
+trial.py
+trial_main_cv.py
+sampling_sobol.py
+sampling_poisson_disk.py
+sampling_halton.py
+reconstructing.py
+pos.py
+map_elites.py
+lhs_with_and_without_context.py
+latin_hypercube.py
+latest-result.txt
+experiment.py
+evolutionary.py
+effective_separator_search.py
+cos_sim_exp.py
+compare_strategies.py
+clustered_lhs.py
+bayesian.py
+bandit.py
+analyze_separators.py
+results/
+robustness_results/
+robustness_results_EleutherAI/
+
 # Distribution / packaging
 .Python
 build/

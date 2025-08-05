@@ -1,0 +1,2 @@
+seed,optimization_mode,dataset,average_train_accuracy,total_separators,average_test_accuracy
+4,gen_cot,samsum,0.2185,1,0.2121

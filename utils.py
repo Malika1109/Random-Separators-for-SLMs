@@ -33,6 +33,11 @@ def set_random_seed(seed):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+    # For deterministic behavior
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 
 def profile_time(func):
@@ -188,6 +193,9 @@ def load_data(dataset_name, path, template="{input_text} {separator} {output_tex
         "agnews": dataset.AGNewsDataset,
         "rte": dataset.RTEDataset,
         "cb": dataset.CBDataset,
+        #new generative datasets
+        "samsum": dataset.SAMSumDataset,
+        "asset": dataset.ASSETDataset 
     }
 
     if dataset_name in dataset_classes:

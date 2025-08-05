@@ -1,0 +1,2 @@
+seed,optimization_mode,dataset,average_train_accuracy,total_separators,average_test_accuracy
+2,human_baseline,samsum,0.2087,1,0.2068

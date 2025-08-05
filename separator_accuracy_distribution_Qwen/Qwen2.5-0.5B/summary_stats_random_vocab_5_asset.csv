@@ -1,0 +1,2 @@
+seed,optimization_mode,dataset,average_train_accuracy,total_separators,average_test_accuracy
+5,random_vocab,asset,41.5586,160,53.6093

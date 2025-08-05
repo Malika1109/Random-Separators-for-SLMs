@@ -1,5 +1,64 @@
 import json
 
+class TextGenerativeDataset:
+    def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
+        self.task_type = "generation"
+        self.path = path
+        self.data = self.load_data(path)
+        self.prompt_template = prompt_template
+
+    def load_data(self, path):
+        with open(path, "r") as f:
+            data = [json.loads(line) for line in f]
+        return data
+
+    def __len__(self):
+        return len(self.data)
+
+    def make_prompt(self, input_text, output_text):
+        return self.prompt_template.format(
+            input_text=input_text, separator="{separator}", output_text=output_text
+        )
+
+    def __getitem__(self, idx, include_output=False):
+        instance = self.data[idx]
+        input_text = instance['dialogue'].strip()
+        output_text = instance['summary'].strip()
+
+        if include_output:
+            prompt = self.make_prompt(input_text, output_text).strip()
+        else:
+            prompt = self.make_prompt(input_text, "").strip()
+        return {"prompt": prompt, "output": output_text}
+
+
+class SAMSumDataset(TextGenerativeDataset):
+    def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
+        super().__init__(path, prompt_template)
+        # Currently, placeholder
+
+
+class ASSETDataset(TextGenerativeDataset):
+    def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
+        super().__init__(path, prompt_template)
+
+    def __getitem__(self, idx, include_output=False):
+        instance = self.data[idx]
+        input_text = instance['original'].strip()
+        reference_list = [ref.strip() for ref in instance['references']]
+
+        if include_output:
+            # Use one reference for prompt construction — first one by default: can also change to random
+            prompt = self.make_prompt(input_text, reference_list[0]).strip()
+        else:
+            prompt = self.make_prompt(input_text, "").strip()
+
+        return {
+            "prompt": prompt,
+            "output": reference_list  # <-- now a list, not just one string
+        }
+
+
 
 class TextClassificationDataset:
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):

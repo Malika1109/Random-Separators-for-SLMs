@@ -1,0 +1,6 @@
+separator,train_score,test_score
+Human: Which of the,0.8141025641025641,0.7421875
+Human: Write a Python,0.7961538461538462,0.75
+Human: Write an article,0.75,0.59375
+A. 营,0.735897435897436,0.578125
+Human: In order,0.6897435897435897,0.59765625

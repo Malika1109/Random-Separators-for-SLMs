@@ -1,0 +1,6 @@
+separator,train_score,test_score
+Hemogaspl,0.75,0.734375
+"The ""Gazette",0.7333333333333333,0.6875
+Laser Hair,0.717948717948718,0.67578125
+Farmacia:,0.7025641025641025,0.6328125
+HUNTS,0.7,0.71875
