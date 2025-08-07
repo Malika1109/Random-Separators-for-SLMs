@@ -571,7 +571,6 @@ def main(args):
         random_separator_texts = get_unique_random_separators(
             generate_random_vocab_separator,
             num_draws=num_random_draw,
-            model=model,
             min_separator_length=min_separator_length,
             max_separator_length=max_separator_length,
             tokenizer=tokenizer

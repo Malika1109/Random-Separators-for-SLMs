@@ -1,161 +1,161 @@
 separator,accuracy,top_5_percent
-as irritating and,0.4384615384615385,True
-that,0.43717948717948724,True
-"""just",0.42435897435897435,True
-"""",0.4217948717948718,True
-this is another,0.4076923076923077,True
-", I guess",0.39358974358974363,True
-"""this movie",0.3910256410256411,True
-they,0.3910256410256411,True
-they are,0.3910256410256411,True
-this movie is,0.3910256410256411,True
-"""the scene",0.38974358974358975,False
-but never,0.3769230769230769,False
-"""and",0.3756410256410257,False
-(,0.36153846153846153,False
-an especially,0.36153846153846153,False
-,0.36025641025641025,False
-"""well",0.36025641025641025,False
-", in my opinion",0.36025641025641025,False
-even,0.36025641025641025,False
-"""the original",0.358974358974359,False
-A funny example,0.358974358974359,False
-another example,0.358974358974359,False
-a,0.3589743589743589,False
-you should,0.3435897435897436,False
-""" a",0.3435897435897436,False
-just,0.3333333333333333,False
-it's,0.32948717948717954,False
-I,0.32948717948717954,False
-""" this is",0.32948717948717954,False
-the movie,0.32820512820512826,False
-The movie,0.32820512820512826,False
-"""the movie",0.32820512820512826,False
-the title,0.3282051282051282,False
-it was hilarious,0.3282051282051282,False
-this,0.3282051282051282,False
-It was,0.3282051282051282,False
-"""one",0.3282051282051282,False
-this is,0.3269230769230769,False
-"and """,0.31410256410256415,False
-The 'G,0.31410256410256415,False
-and its,0.31410256410256415,False
-which,0.3141025641025641,False
-",",0.3128205128205128,False
-I found this,0.3128205128205128,False
-as fun,0.3128205128205128,False
-for a bit,0.3128205128205128,False
-for the,0.3128205128205128,False
-"""all of",0.3128205128205128,False
-the narrator,0.3128205128205128,False
-as a true,0.3128205128205128,False
-...,0.31153846153846154,False
-some things,0.2987179487179487,False
-.,0.2987179487179487,False
-"""A funny",0.29743589743589743,False
-", but there",0.29743589743589743,False
-"""It",0.29743589743589743,False
-in,0.29743589743589743,False
-another hilarious scene,0.29743589743589743,False
-with respect,0.29743589743589743,False
-for a slightly more serious,0.29743589743589743,False
-"""no true",0.29743589743589743,False
-a line,0.29743589743589743,False
-many,0.29743589743589743,False
-"""a delightful",0.29743589743589743,False
-"""good",0.29743589743589743,False
-it,0.29743589743589743,False
-[...],0.29743589743589743,False
-It,0.29743589743589743,False
-is,0.29743589743589743,False
-another funny horror,0.29743589743589743,False
-one of,0.29743589743589743,False
-"""he",0.29743589743589743,False
-""" a story",0.29743589743589743,False
-of the movie,0.29743589743589743,False
-"""in",0.29743589743589743,False
-"""there",0.29743589743589743,False
-"""a fine",0.29743589743589743,False
-unusual,0.29743589743589743,False
-another scene in,0.2974358974358974,False
-"""the plot",0.29615384615384616,False
-"""It begins",0.29615384615384616,False
-"""the whole",0.29615384615384616,False
-this is the,0.2833333333333333,False
-A great,0.28205128205128205,False
-the last moment,0.28205128205128205,False
-in a,0.28205128205128205,False
-"""it is",0.28205128205128205,False
-"""to wit",0.28205128205128205,False
-a bit too,0.28205128205128205,False
-more,0.28205128205128205,False
-the final two,0.28205128205128205,False
-", but it",0.28205128205128205,False
-the,0.28076923076923077,False
-"""the ending",0.2794871794871795,False
-if,0.2692307692307693,False
-one,0.267948717948718,False
-"""the audience",0.26666666666666666,False
-"""a",0.26666666666666666,False
-; sorry,0.26666666666666666,False
-of,0.26666666666666666,False
-. but what i,0.26666666666666666,False
-another,0.26538461538461544,False
-"""even",0.2653846153846154,False
-to do it but,0.2653846153846154,False
-they go into,0.2641025641025641,False
-in the,0.2512820512820513,False
-"""the dialogue",0.24871794871794878,False
-a good,0.24743589743589745,False
-if you,0.23717948717948723,False
-the film doesn,0.23717948717948723,False
-for one,0.2358974358974359,False
-the first thing,0.23461538461538461,False
-if I may,0.22051282051282053,False
-I never really,0.22051282051282053,False
-"""another",0.22051282051282053,False
-; no,0.22051282051282053,False
-It only,0.22051282051282053,False
-with a,0.22051282051282053,False
-", don't",0.21794871794871798,False
-and still worse,0.21794871794871798,False
-"""a bit",0.21794871794871798,False
-but this one is horrible,0.21794871794871798,False
-"""an",0.20512820512820512,False
-with,0.20384615384615387,False
-to avoid the,0.2025641025641026,False
-""" I",0.2025641025641026,False
-the only thing,0.2025641025641026,False
-the director's,0.2025641025641026,False
-another example :,0.18846153846153849,False
-these,0.18846153846153846,False
-"""what is",0.18717948717948718,False
-"but, well,",0.17307692307692307,False
-A,0.17307692307692307,False
-", but it's awful",0.1717948717948718,False
-even as,0.15769230769230771,False
-As,0.15769230769230771,False
-"""It is",0.15769230769230771,False
-"""therefore",0.12692307692307692,False
-... but,0.12564102564102564,False
-The,0.12435897435897439,False
-"""what a",0.12435897435897439,False
-however,0.10897435897435899,False
-but,0.09230769230769231,False
-(the good,0.07692307692307693,False
-and if the,0.06282051282051282,False
-This,0.047435897435897434,False
-there are no,0.047435897435897434,False
-"""... this takes",0.046153846153846156,False
-if this,0.03076923076923077,False
-"""There",0.03076923076923077,False
-"""I",0.03076923076923077,False
-"""the",0.015384615384615385,False
-"""in their",0.015384615384615385,False
-"""these",0.0,False
-"""This",0.0,False
-the fact that,0.0,False
-"""The",0.0,False
-The only,0.0,False
-"""this",0.0,False
-"""the first",0.0,False
+Cole Bang,0.7192307692307692,True
+Huge Could biGROUP,0.7179487179487178,True
+countSHIP debugger Mong,0.7166666666666667,True
+MCphiairtual Charles,0.7038461538461538,True
+overd purity hilarious,0.7025641025641025,True
+extending,0.7012820512820513,True
+Magnpect JerryNatural Fahrenheit,0.6897435897435897,True
+exec crystals iPad ClarePL,0.6884615384615385,True
+Faculty eyelervandum,0.6871794871794872,False
+Rwanda airborne Reloaded,0.6858974358974359,False
+extend,0.6833333333333333,False
+angeratri Justice,0.6743589743589744,False
+CDC Gamer,0.6717948717948717,False
+fill,0.6705128205128206,False
+persuasive FernandExpl,0.6679487179487179,False
+trainers,0.6589743589743591,False
+885ELFnyder msec,0.6551282051282052,False
+relyfol Investors,0.6551282051282052,False
+clinging soul,0.6551282051282052,False
+1922 OPEN,0.653846153846154,False
+confidently Ecuadoruitous Durctic,0.6538461538461539,False
+cour,0.6435897435897435,False
+insanity booklet semester nit,0.6410256410256411,False
+ail Consequentlyppa statute Torres,0.641025641025641,False
+gpu antidfinder crus,0.6397435897435899,False
+Dec chirop,0.6397435897435898,False
+RandallTxMel,0.6384615384615385,False
+Advoc cruelty pumpkin,0.6384615384615384,False
+tracksLisaSpecifically spooncellent,0.6371794871794871,False
+endiary450,0.626923076923077,False
+strifefrog� rundown,0.6256410256410256,False
+Sh selfie horsesnih guiName,0.6256410256410256,False
+Tag Grounds,0.6256410256410256,False
+Pasleticorying seventeen,0.6243589743589744,False
+NAME flu Marshall publicized,0.6243589743589744,False
+Previously Cam playback compiled ACE,0.6243589743589744,False
+painted toilet rebound,0.6243589743589744,False
+Yun Spock,0.6243589743589744,False
+irie hitch drownMonitor,0.6243589743589744,False
+setbacks principalsviksoch fourteen,0.6243589743589744,False
+nai Inst battleddir,0.6230769230769231,False
+iflingkay operate Wired,0.6230769230769231,False
+cannonsonew,0.623076923076923,False
+Calendarubb,0.6217948717948718,False
+videos,0.6217948717948718,False
+bo goaltendereah,0.608974358974359,False
+accessing Pricing Harden Biblical INV,0.608974358974359,False
+ighting Robotsventh,0.608974358974359,False
+ヴァ swallowed DID CambridgeJoy,0.6076923076923076,False
+Ill lax,0.6076923076923076,False
+aley multitude whale Juliaashes,0.6076923076923076,False
+ankTH,0.6076923076923076,False
+Charleston Berm Bod,0.6076923076923076,False
+Yanukovych Deborgalitarian,0.6064102564102564,False
+olith,0.6064102564102564,False
+osed installing,0.6064102564102564,False
+ledged Declaration Tam viewersoubtedly,0.6064102564102564,False
+inburghrieved,0.6051282051282052,False
+views,0.6051282051282051,False
+modifiers never clearly432,0.6038461538461539,False
+fatalreplYepging Pt,0.5935897435897437,False
+ē Doe NotreNVbusiness,0.5923076923076923,False
+average foundations Migration,0.5923076923076923,False
+Created Bark,0.5923076923076923,False
+Exhin,0.5910256410256409,False
+Donnell,0.5910256410256409,False
+trenchesulton Enlightenment typically accordingly,0.5910256410256409,False
+stirortal ancestor,0.5910256410256409,False
+Lever,0.5910256410256409,False
+initGAME,0.5897435897435898,False
+feas,0.5897435897435898,False
+initialized,0.5897435897435898,False
+$$acly PDT left Kl,0.5794871794871794,False
+041 Benedict,0.5769230769230769,False
+Quiet Lounge modify,0.5769230769230769,False
+Hel Musical Calculator,0.5769230769230769,False
+aver Ask,0.5769230769230769,False
+gaard spite soundingincinnati,0.5756410256410256,False
+Bol collectively gearswered,0.5756410256410256,False
+nort 54,0.5743589743589743,False
+Sci,0.5743589743589743,False
+ranch Simpson forecastsanted,0.5743589743589743,False
+Putaughlin Sok galvan,0.5743589743589743,False
+mov,0.5743589743589743,False
+pond,0.5743589743589743,False
+ran engild,0.5653846153846154,False
+ainment AND,0.5641025641025641,False
+estimationther,0.5602564102564103,False
+cham407,0.558974358974359,False
+Torresombs heinousCharbf,0.558974358974359,False
+Je rescuing Curtogether,0.558974358974359,False
+illo Meadlines,0.558974358974359,False
+sugar neededpdf certified,0.5487179487179488,False
+owe,0.5487179487179487,False
+Clubs intermediary praise unfair weights,0.5487179487179487,False
+ION139537 summoning,0.5474358974358975,False
+arbitration,0.5448717948717948,False
+urden,0.5435897435897437,False
+polit Actor rallying,0.5435897435897437,False
+rib,0.5435897435897437,False
+publicity carbsRFines,0.5435897435897437,False
+ific sidebar foundational,0.5435897435897437,False
+ithering clingingCamandem Mim,0.5333333333333333,False
+05 plateau grievances classic,0.532051282051282,False
+believer enroll outcry Finder My,0.5307692307692308,False
+")"" bourgeoisie",0.5294871794871795,False
+427 liver Feb,0.517948717948718,False
+overrideFive,0.5141025641025642,False
+confusedorius,0.514102564102564,False
+fridge Nit })ucha players,0.5128205128205129,False
+Light,0.5128205128205129,False
+wings303facebook eth affects,0.5128205128205129,False
+strousrade Fran regener,0.5128205128205129,False
+pills Quart concentration,0.5128205128205129,False
+regards risky Offline Socialist subsystem,0.5128205128205129,False
+acle,0.5128205128205129,False
+runes inhibition inspect,0.5128205128205129,False
+buffalo334Location illuminating,0.5128205128205129,False
+FPSReloaded imperialist chimpanzees,0.5128205128205129,False
+ties Favorite Telescopebest srf,0.5025641025641026,False
+wast unfor,0.5025641025641026,False
+OM,0.49743589743589756,False
+neoliberal,0.49743589743589756,False
+obic,0.49743589743589756,False
+Episodeiosyncr charitable,0.49743589743589756,False
+fittpod discovermarket,0.49743589743589756,False
+Filipino,0.49743589743589756,False
+humourifiericle Wine,0.49743589743589756,False
+idis mammalian,0.49743589743589756,False
+exit incentives Coast un,0.49743589743589756,False
+Abdelocker Citadel chapter,0.49743589743589756,False
+shortest STR 1300astically,0.49743589743589756,False
+facult psycho divul transplantPop,0.49743589743589756,False
+Wander,0.49743589743589756,False
+uries refuses endpoint decades,0.49743589743589756,False
+Instruction,0.49743589743589756,False
+Stain Pharm participate Ath literature,0.49743589743589756,False
+texted truelists Jaw sincerity,0.49743589743589756,False
+Jess tennis,0.49743589743589756,False
+iscopal >< BugsUNE<?,0.49743589743589756,False
+gorithmlocked cance Satellite deregulation,0.49743589743589756,False
+nonex naive emotions,0.49743589743589756,False
+big fools661relevant,0.49743589743589756,False
+nationalists,0.49743589743589756,False
+Bolivia OC unlike Journalism dolls,0.49743589743589745,False
+garbageBuilt Causes,0.48589743589743595,False
+aintsractical,0.4820512820512821,False
+(& quarters,0.4820512820512821,False
+agnetic,0.482051282051282,False
+oward convergence,0.482051282051282,False
+Dar MineralAmericaasters07,0.482051282051282,False
+edin803stop prohibits,0.4705128205128205,False
+proclaimed,0.4666666666666667,False
+dudes,0.4666666666666667,False
+ato,0.4666666666666667,False
+emonic,0.4666666666666667,False
+Disable,0.4217948717948718,False
+spit segment profession VERY presents,0.28205128205128205,False
+chargThough,0.28076923076923077,False
+to,0.12307692307692308,False
