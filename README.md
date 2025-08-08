@@ -10,7 +10,7 @@ It builds on and extends the methodology from:
 
 ---
 
-## 📌 Overview
+## Overview
 
 The original Lu et al. work evaluated random separator strategies **only on Large Language Models (LLMs)** and **classification tasks**.
 
@@ -28,7 +28,7 @@ This code adapts their framework to:
 
 ---
 
-## 📂 Repository Structure
+## Repository Structure
 
 ```
 ├── main.py          # Entry point for experiments
@@ -39,7 +39,7 @@ This code adapts their framework to:
 └── README.md        # This file
 ```
 
-## 🚀 Run an experiment
+## Run an experiment
 
 An example execution is provided in `run.sh`:
 
@@ -54,7 +54,7 @@ python3 main.py \
   --dataset sst2
 ```
 
-## ⚙️ Command-Line Arguments
+## Command-Line Arguments
 
 | Argument | Description | Example |
 |----------|-------------|---------|
@@ -66,7 +66,7 @@ python3 main.py \
 | `--seed` | Random seed for reproducibility | `1` |
 | `--dataset` | Dataset name: `sst2`, `sst5`, `mr`, `subj`, `agnews`, `trec`, `mpqa`, `samsum`, `asset` | `sst2` |
 
-## 🔧 Implementation Notes
+## Implementation Notes
 
 This repository is **adapted** from the original implementation by Lu et al.
 
@@ -79,7 +79,7 @@ This repository is **adapted** from the original implementation by Lu et al.
    * **ROUGE-L F1** for SAMSum
    * **SARI** for ASSET
 
-## 📖 Citation
+## Citation
 
 If you use this code, please cite the original work by Lu et al.:
 
