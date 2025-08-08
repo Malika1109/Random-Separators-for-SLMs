@@ -24,7 +24,6 @@ This code adapts their framework to:
   - `random_wo_context` — model-generated separator without context
   - `random_with_context` — model-generated separator with few-shot context
   - Baselines (e.g., `"Answer:"`)
-- **Robustness analysis** of top-performing separators
 
 ---
 
@@ -34,8 +33,9 @@ This code adapts their framework to:
 ├── main.py          # Entry point for experiments
 ├── run.sh           # Example execution script
 ├── datasets/        # Data loading utilities
-├── utils/           # Helper functions and evaluation metrics
-├── results/         # Saved metrics, logs, and plots
+├── utils/           # Helper functions
+├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments
+├── separator_logs_[model_name]/         # Top 5 separators for an experiment, with training and testing score
 └── README.md        # This file
 ```
 
@@ -68,12 +68,11 @@ python3 main.py \
 
 ## Implementation Notes
 
-This repository is **adapted** from the original implementation by Lu et al.
+This repository builds from the original implementation by Lu et al.
 
-* Core separator generation methods are retained, but:
-   * Code is extended to **SLM-specific evaluation**
-   * **Generation tasks** are added
-   * **Cross-validation** and **robustness testing** are included
+* Code is extended to **SLM-specific evaluation**
+* **Generation tasks** are added
+* **Cross-validation** and **robustness testing** are included
 * All metrics for classification are **exact match accuracy**
 * Generation tasks use:
    * **ROUGE-L F1** for SAMSum
