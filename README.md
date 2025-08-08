@@ -72,7 +72,7 @@ This repository builds from the original implementation by Lu et al.
 
 * Code is extended to **SLM-specific evaluation**
 * **Generation tasks** are added
-* **Cross-validation** and **robustness testing** are included
+* **Cross-validation** for classification and **robustness testing** are included
 * All metrics for classification are **exact match accuracy**
 * Generation tasks use:
    * **ROUGE-L F1** for SAMSum
