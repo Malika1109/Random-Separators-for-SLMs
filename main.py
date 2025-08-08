@@ -984,8 +984,8 @@ if __name__ == "__main__":
     parser.add_argument('--experiment_type', type=str, default='standard',
                        choices=['standard', 'length']),
     parser.add_argument("--optimization_mode", choices=[
-        "random_vocab", "random_wo_context", "pos", "experiment", "ape", "evolutionary", "empty",
-        "guided_evolutionary", "bandit", "human_baseline", "cot", "random_with_context", "gen_cot",
+        "random_vocab", "random_wo_context", "random_with_context" 
+        "human_baseline", "cot", "gen_cot",
         "simplify"
     ], default="random_vocab")
     args = parser.parse_args()
