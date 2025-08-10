@@ -39,6 +39,7 @@ print("Starting the script...")
 
 from rouge import Rouge
 from sacremoses import MosesTokenizer
+import hashlib
 
 def cal_rouge(output_texts: List[str], ref_texts: List[str], 
               tokenizer: MosesTokenizer, rouge: Rouge) -> tuple:
@@ -301,56 +302,16 @@ def get_kfold_splits(data: List, k: int = 5, seed: int = 42) -> List[tuple]:
     kf = KFold(n_splits=k, shuffle=True, random_state=seed)
     return [(train_idx, val_idx) for train_idx, val_idx in kf.split(data)]
 
-
-def get_synonym(word: str) -> str:
-    """
-    Get a random synonym for a word using WordNet.
-    
-    Args:
-        word: Input word to find synonyms for
-        
-    Returns:
-        A random synonym if available, otherwise the original word
-    """
-    synsets = wordnet.synsets(word)
-    lemmas = set()
-    for syn in synsets:
-        for lemma in syn.lemmas():
-            if lemma.name().lower() != word.lower():
-                lemmas.add(lemma.name().replace('_', ' '))
-    return random.choice(list(lemmas)) if lemmas else word
-
-def _char_noise(word: str) -> str:
-    """
-    Add lightweight character-level noise to a word.
-    
-    For short words (≤3 chars), performs single character replacement.
-    For longer words, either swaps two internal letters or replaces one.
-    
-    Args:
-        word: Input word to add noise to
-        
-    Returns:
-        Word with character-level noise applied
-    """
-    if len(word) < 4:  # Short words: single character replacement
-        idx = random.randrange(len(word))
-        new_char = random.choice(string.ascii_letters)
-        return word[:idx] + new_char + word[idx+1:]
-
-    # Longer words: swap or replace internal characters
-    if random.random() < 0.5:         # swap two internal letters
-        i, j = random.sample(range(1, len(word)-1), 2)
-        word_as_list = list(word)
-        word_as_list[i], word_as_list[j] = word_as_list[j], word_as_list[i]
-        return "".join(word_as_list)
-    else:   # Single character replacement
-        idx = random.randrange(1, len(word)-1)
-        new_char = random.choice(string.ascii_letters)
-        return word[:idx] + new_char + word[idx+1:]
+def stable_seed(*parts, base_seed: int = 0) -> int:
+    h = hashlib.sha256()
+    h.update(str(base_seed).encode('utf-8'))
+    for p in parts:
+        h.update(b'||')
+        h.update(str(p).encode('utf-8'))
+    return int.from_bytes(h.digest()[:8], 'big')
 
 
-def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym") -> str:
+def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym", base_seed: int = 0) -> str:    
     """
     Apply perturbations to a separator for stability testing.
     
@@ -365,26 +326,22 @@ def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym") -
     Returns:
         Perturbed separator string
     """
+    # Stable, order-independent seed
+    seed_val = stable_seed(separator, mode, base_seed=base_seed)
+    rng = random.Random(seed_val)
+
     words = separator.strip().split()
     if not words:
         return separator
 
-    idx = random.randint(0, len(words) - 1)
+    idx = rng.randint(0, len(words) - 1)
     perturbed = words.copy()
 
-    if mode == "synonym":
-        candidate = get_synonym(perturbed[idx])
-        # fall back to character noise if no synonym (or identical)
-        if candidate == perturbed[idx]:
-            candidate = _char_noise(perturbed[idx])
-        perturbed[idx] = candidate
-
-
-    elif mode == "replace":
-        # Replace with words of similar length from vocabulary
-        candidates = [w for w in vocab if abs(len(w) - len(words[idx])) <= 2]
+    if mode == "replace":
+        # Sort to make candidate order deterministic
+        candidates = sorted([w for w in vocab if abs(len(w) - len(words[idx])) <= 2])
         if candidates:
-            perturbed[idx] = random.choice(candidates)
+            perturbed[idx] = rng.choice(candidates)
 
     elif mode == "delete" and len(words) > 1:
         perturbed.pop(idx)
@@ -394,112 +351,241 @@ def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym") -
         perturbed.insert(idx, extra)
 
     elif mode == "shuffle":
-        random.shuffle(perturbed)
+        if len(perturbed) > 1:  # Need at least 2 words to shuffle
+            original_order = perturbed.copy()
+            max_attempts = 10
+            attempts = 0
+            
+            while perturbed == original_order and attempts < max_attempts:
+                random.shuffle(perturbed)
+                attempts += 1
+                
+            # If still same after max attempts, do manual swap
+            if perturbed == original_order:
+                # Swap first two elements to guarantee change
+                perturbed[0], perturbed[1] = perturbed[1], perturbed[0]
 
     return " ".join(perturbed)
 
 
-def test_separator_stability(top_separators: List[Dict], model, tokenizer, 
-                           context: str, test_data: List[Dict], 
-                           optimization_mode: str, *, is_generation_task: bool,
-                           dataset_name: str, batch_size: int = 8,
-                           max_new_tokens: int = 1, max_length: int = 768,
-                           cal_sari=None, cal_rouge=None, tokenizer_moses=None, 
-                           rouge=None):
+def test_separator_stability(
+        top_separators: List[Dict],
+        model,
+        tokenizer,
+        context: str,
+        test_data: List[Dict],
+        optimization_mode: str,
+        *,
+        is_generation_task: bool,
+        dataset_name: str,
+        batch_size: int      = 8,
+        max_new_tokens: int  = 1,
+        max_length: int      = 768,
+        cal_sari=None,
+        cal_rouge=None,
+        tokenizer_moses=None,
+        rouge=None,
+        seed: int            = 1,   # <---- control reproducibility
+        return_results: bool = False
+):
     """
-    Test separator stability through perturbation analysis.
-    
-    This function evaluates how robust the top-performing separators are to
-    small modifications, which helps assess whether good performance is due
-    to the separator content or random chance.
-    
-    Args:
-        top_separators: List of best-performing separators
-        model: Language model for evaluation
-        tokenizer: Model tokenizer
-        context: Context examples for prompts
-        test_data: Test dataset
-        optimization_mode: Current optimization strategy
-        is_generation_task: Whether this is a generation (vs classification) task
-        dataset_name: Name of the dataset
-        batch_size: Batch size for model inference
-        max_new_tokens: Maximum tokens to generate
-        max_length: Maximum sequence length
-        cal_sari: SARI calculation function (for ASSET dataset)
-        cal_rouge: ROUGE calculation function (for generation tasks)
-        tokenizer_moses: Moses tokenizer (for ROUGE calculation)
-        rouge: Rouge scorer instance
+    Re-evaluate each top separator after perturbations and report how the test
+    score changes. Perturbations are fully reproducible across runs for the same seed.
     """
-
     print("\n=== Separator Stability Test ===")
 
-    # Build vocabulary for perturbations 
-    vocab = [tok for tok in tokenizer.get_vocab() if tok.isalpha() and len(tok) > 2]
+    # Build deterministic vocab
+    vocab = sorted([tok for tok in tokenizer.get_vocab().keys()
+                    if tok.isalpha() and len(tok) > 2])
+
+    # Ensure no dropout etc.
+    model.eval()
 
     def _generate(batch_prompts: List[str]) -> List[str]:
-        """Helper function to generate model outputs for a batch of prompts."""
         inputs = tokenizer(batch_prompts,
                            return_tensors="pt",
                            padding=True,
                            truncation=True,
                            max_length=max_length).to(model.device)
-
         with torch.no_grad():
             outs = model.generate(**inputs,
                                   max_new_tokens=max_new_tokens,
                                   do_sample=False,
                                   pad_token_id=tokenizer.pad_token_id,
                                   return_dict_in_generate=True)
-
         gen_tokens = outs.sequences[:, inputs["input_ids"].shape[1]:]
         return tokenizer.batch_decode(gen_tokens, skip_special_tokens=True)
 
-    # Test each top separator with different perturbation modes
-    for entry in top_separators:
-        base_sep    = entry["separator"]
-        base_acc    = entry.get("test_score")     # Classification
-        base_sari   = entry.get("sari")           # ASSET SARI Score
-        base_rouge  = entry.get("rougeL_f1")      # Generation ROUGE-L F1
+    # Store results for analysis (if requested)
+    results = {} if return_results else None
 
-        for mode in ["synonym", "replace", "insert", "delete", "shuffle"]:
-            perturbed_sep = perturb_separator(base_sep, vocab, mode=mode)
+    for sep_idx, entry in enumerate(top_separators):
+        base_sep   = entry["separator"]
+        base_acc   = entry.get("test_score")
+        base_sari  = entry.get("sari")
+        base_rouge = entry.get("rougeL_f1")
 
-            # Build full prompts with perturbed separator
+        if return_results:
+            results[sep_idx] = {
+                'separator': base_sep,
+                'original_accuracy': base_acc or base_sari or base_rouge,
+                'perturbations': {}
+            }
+
+        for mode in ["replace", "insert", "delete", "shuffle"]:
+            # Deterministic per (separator, mode, seed)
+            perturbed_sep = perturb_separator(base_sep, vocab, mode=mode, base_seed=seed)
+
+            # Build prompts...
             prompts = [context + "\n\n" + item["prompt"] for item in test_data]
             prompts = [p.replace("{separator}", perturbed_sep) for p in prompts]
 
-            # Generate predictions in mini-batches
+            # Inference loop...
             predictions = []
             for i in range(0, len(prompts), batch_size):
                 predictions.extend(_generate(prompts[i:i+batch_size]))
             predictions = [p.strip() for p in predictions]
 
-            # Calculate appropriate metric based on task type
             if not is_generation_task:
-                labels      = [item["output"] for item in test_data]
-                accuracy    = compute_accuracy(predictions, labels)
-
+                labels   = [item["output"] for item in test_data]
+                accuracy = compute_accuracy(predictions, labels)
                 print(f"[{mode.upper()}] {repr(base_sep)} → {repr(perturbed_sep)}")
                 print(f"Test Accuracy: {base_acc:.3f} → Perturbed Accuracy: {accuracy:.3f}\n")
 
-            elif dataset_name == "asset":
-                references  = [item["output"] for item in test_data]
-                sources     = [item["prompt"].split("{separator}")[0].strip()
-                               for item in test_data]
-                sari_score  = cal_sari(predictions, sources, references)["sari"]
+                if return_results:
+                    results[sep_idx]['perturbations'][mode] = accuracy
 
+            elif dataset_name == "asset":
+                references = [item["output"] for item in test_data]
+                sources    = [item["prompt"].split("{separator}")[0].strip()
+                              for item in test_data]
+                sari_score = cal_sari(predictions, sources, references)["sari"]
                 print(f"[{mode.upper()}] {repr(base_sep)} → {repr(perturbed_sep)}")
                 print(f"Test SARI: {base_sari:.3f} → Perturbed SARI: {sari_score:.3f}\n")
 
+                if return_results:
+                    results[sep_idx]['perturbations'][mode] = sari_score
+
             else:
-                labels      = [item["output"] for item in test_data]
+                labels = [item["output"] for item in test_data]
                 _, _, rl_f1 = cal_rouge(predictions, labels,
                                         tokenizer=tokenizer_moses,
                                         rouge=rouge)
-
                 print(f"[{mode.upper()}] {repr(base_sep)} → {repr(perturbed_sep)}")
                 print(f"Test ROUGE-L F1: {base_rouge:.3f} → Perturbed ROUGE-L F1: {rl_f1:.3f}\n")
 
+                if return_results:
+                    results[sep_idx]['perturbations'][mode] = rl_f1
+
+    return results if return_results else None
+
+def process_perturbation_results(results: Dict) -> Dict:
+    """Process robustness results and calculate summary statistics."""
+    processed = {}
+    
+    for sep_idx, data in results.items():
+        separator = data['separator']
+        original_acc = data['original_accuracy']
+        
+        valid_perturbations = []
+        perturbation_details = {}
+        
+        # Process each perturbation mode
+        for mode, perturbed_acc in data['perturbations'].items():
+            if perturbed_acc != original_acc:  # Only count actual changes
+                drop = original_acc - perturbed_acc
+                relative_drop = (drop / original_acc) * 100 if original_acc > 0 else 0
+                
+                valid_perturbations.append({
+                    'mode': mode,
+                    'drop': drop,
+                    'relative_drop': relative_drop,
+                    'perturbed_acc': perturbed_acc
+                })
+                
+                perturbation_details[mode] = {
+                    'accuracy': perturbed_acc,
+                    'drop': drop,
+                    'relative_drop': relative_drop
+                }
+        
+        # Calculate summary statistics
+        if valid_perturbations:
+            avg_drop = np.mean([p['drop'] for p in valid_perturbations])
+            worst_drop = max([p['drop'] for p in valid_perturbations])
+            best_drop = min([p['drop'] for p in valid_perturbations])
+            most_vulnerable = max(valid_perturbations, key=lambda x: x['drop'])['mode']
+            least_vulnerable = min(valid_perturbations, key=lambda x: x['drop'])['mode']
+        else:
+            avg_drop = worst_drop = best_drop = 0
+            most_vulnerable = least_vulnerable = 'None'
+        
+        processed[sep_idx] = {
+            'separator': separator,
+            'original_acc': original_acc,
+            'avg_drop': avg_drop,
+            'worst_drop': worst_drop,
+            'best_drop': best_drop,
+            'most_vulnerable_mode': most_vulnerable,
+            'least_vulnerable_mode': least_vulnerable,
+            'perturbation_details': perturbation_details,
+            'num_valid_perturbations': len(valid_perturbations)
+        }
+    
+    return processed
+
+def analyze_robustness_across_seeds(seeds_results: Dict[int, Dict]) -> Dict:
+    """Analyze robustness results across multiple seeds."""
+    
+    # Collect all drops across seeds
+    all_avg_drops = []
+    all_worst_drops = []
+    all_best_drops = []
+    vulnerability_counts = {}
+    
+    print("\n" + "="*80)
+    print("ROBUSTNESS ANALYSIS ACROSS SEEDS")
+    print("="*80)
+    
+    for seed, processed_results in seeds_results.items():
+        print(f"\nSeed {seed} Summary:")
+        print("-" * 40)
+        
+        for sep_idx, data in processed_results.items():
+            separator = data['separator'][:30] + "..." if len(data['separator']) > 30 else data['separator']
+            
+            print(f"  {separator:35} | Avg Drop: {data['avg_drop']:.3f} | "
+                  f"Worst: {data['worst_drop']:.3f} | Most Vulnerable: {data['most_vulnerable_mode']}")
+            
+            all_avg_drops.append(data['avg_drop'])
+            all_worst_drops.append(data['worst_drop'])
+            all_best_drops.append(data['best_drop'])
+            
+            # Count vulnerability modes
+            mode = data['most_vulnerable_mode']
+            vulnerability_counts[mode] = vulnerability_counts.get(mode, 0) + 1
+    
+    # Overall statistics
+    overall_stats = {
+        'mean_avg_drop': np.mean(all_avg_drops),
+        'std_avg_drop': np.std(all_avg_drops),
+        'mean_worst_drop': np.mean(all_worst_drops),
+        'std_worst_drop': np.std(all_worst_drops),
+        'mean_best_drop': np.mean(all_best_drops),
+        'std_best_drop': np.std(all_best_drops),
+        'most_common_vulnerability': max(vulnerability_counts.items(), key=lambda x: x[1]) if vulnerability_counts else ('None', 0)
+    }
+    
+    # Print summary
+    print(f"\n{'='*80}")
+    print("OVERALL ROBUSTNESS STATISTICS")
+    print(f"{'='*80}")
+    print(f"Average Drop:    {overall_stats['mean_avg_drop']:.3f} ± {overall_stats['std_avg_drop']:.3f}")
+    print(f"Worst-Case Drop: {overall_stats['mean_worst_drop']:.3f} ± {overall_stats['std_worst_drop']:.3f}")
+    print(f"Best-Case Drop:  {overall_stats['mean_best_drop']:.3f} ± {overall_stats['std_best_drop']:.3f}")
+    print(f"Most Vulnerable Mode: {overall_stats['most_common_vulnerability'][0]} ({overall_stats['most_common_vulnerability'][1]} cases)")
+    
+    return overall_stats
 
 
 def main(args):
@@ -969,6 +1055,16 @@ def main(args):
     separator_log_df.to_csv(file_path, index=False)
     print(f"Separator log saved to: {fname}")
 
+    results = test_separator_stability(top_k_entries, model, tokenizer, context, test_data, optimization_mode=optimization_mode, is_generation_task=is_generation_task, dataset_name=dataset_name, batch_size=batch_size, max_new_tokens=max_new_tokens, max_length=768, cal_sari=cal_sari, cal_rouge=cal_rouge, tokenizer_moses=tokenizer_moses, rouge=rouge, seed=seed, return_results=True)
+
+    # Process results
+    if results:
+        processed = process_perturbation_results(results)
+        # Save processed results with seed info
+        import pickle
+        with open(f'robustness_results_{dataset_name}_{optimization_mode}_{seed}_{safe_model_name}.pkl', 'wb') as f:
+            pickle.dump(processed, f)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -984,7 +1080,7 @@ if __name__ == "__main__":
     parser.add_argument('--experiment_type', type=str, default='standard',
                        choices=['standard', 'length']),
     parser.add_argument("--optimization_mode", choices=[
-        "random_vocab", "random_wo_context", "random_with_context" 
+        "random_vocab", "random_wo_context", "random_with_context", 
         "human_baseline", "cot", "gen_cot",
         "simplify"
     ], default="random_vocab")
