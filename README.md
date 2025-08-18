@@ -35,7 +35,7 @@ This code adapts their framework to:
 ├── datasets/                                     # Data loading utilities
 ├── utils/                                        # Helper functions
 ├── analyze_robustness.py                         # Analyze separator robustness across seeds
-├── requirements.txt             # Python dependencies
+├── requirements.txt                              # Python dependencies
 ├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments
 ├── separator_logs_[model_name]/                  # Top 5 separators for an experiment, with training and testing score
 └── README.md        # This file
