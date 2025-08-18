@@ -11,12 +11,28 @@ from tqdm import tqdm
 from collections import defaultdict
 
 
+# -------------------------------
+# Directory and file utilities
+# -------------------------------
 def check_dir_exists(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
-
+# -------------------------------
+# Data sampling helpers
+# -------------------------------
 def balanced_sample(data, n_shot=1):
+    """
+    Create a balanced few-shot sample from dataset.
+    Ensures that for each label, exactly `n_shot` examples are included.
+
+    Args:
+        data: dataset object implementing __getitem__ with include_output=True
+        n_shot: number of examples per label
+
+    Returns:
+        A balanced list of samples across all labels
+    """
     label_dict = defaultdict(list)
     for i in range(len(data)):
         item = data.__getitem__(i, include_output=True)
@@ -30,6 +46,10 @@ def balanced_sample(data, n_shot=1):
 
 
 def set_random_seed(seed):
+    """
+    Set random seeds across libraries for reproducibility.
+    Ensures deterministic behavior in PyTorch, NumPy, and Python random.
+    """
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
@@ -180,7 +200,22 @@ def openai_batch_generator(prompts, model):
     return predictions, log_probs, torch.tensor(np.array(dists))
 
 
+# -------------------------------
+# Dataset loader
+# -------------------------------
 def load_data(dataset_name, path, template="{input_text} {separator} {output_text}"):
+    """
+    Load dataset object given name and JSONL path.
+    Supports both classification and generation datasets.
+
+    Args:
+        dataset_name: str (sst2, sst5, dbpedia, samsum, asset, etc.)
+        path: path to data file (JSONL format)
+        template: prompt template for formatting
+
+    Returns:
+        Dataset object of appropriate class
+    """
     dataset_classes = {
         "sst2": dataset.SST2Dataset,
         "sst5": dataset.SST5Dataset,

@@ -1,6 +1,21 @@
 import json
 
+# ====================================
+# Base class for generation datasets
+# ====================================
 class TextGenerativeDataset:
+    """
+    Generic dataset class for generation tasks (e.g., summarization, simplification).
+
+    Each line in the input JSONL file should contain fields for:
+        - input_text (e.g., dialogue or original sentence)
+        - output_text (e.g., summary or simplification)
+
+    Args:
+        path (str): path to the dataset (JSONL file).
+        prompt_template (str): template used to construct prompts. 
+                               Should contain placeholders: {input_text}, {separator}, {output_text}.
+    """
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         self.task_type = "generation"
         self.path = path
@@ -21,6 +36,18 @@ class TextGenerativeDataset:
         )
 
     def __getitem__(self, idx, include_output=False):
+        """
+        Retrieve a dataset instance.
+
+        Args:
+            idx (int): index of the instance
+            include_output (bool): whether to include the gold output in the prompt
+
+        Returns:
+            dict with keys:
+                - "prompt": formatted text with {separator} placeholder
+                - "output": gold reference output
+        """
         instance = self.data[idx]
         input_text = instance['dialogue'].strip()
         output_text = instance['summary'].strip()
@@ -59,8 +86,17 @@ class ASSETDataset(TextGenerativeDataset):
         }
 
 
-
+# ====================================
+# Base class for classification datasets
+# ====================================
 class TextClassificationDataset:
+    """
+    Generic dataset class for classification tasks.
+
+    Args:
+        path (str): path to JSONL file with {"sentence": ..., "label": ...}
+        prompt_template (str): formatting template
+    """
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         self.task_type = "classification"
         self.path = path
@@ -92,8 +128,11 @@ class TextClassificationDataset:
             prompt = self.make_prompt(input_text, "").strip()
         return {"prompt": prompt, "output": output_text}
 
-
+# ====================================
+# Specific classification datasets
+# ====================================
 class RTEDataset(TextClassificationDataset):
+    """RTE: Recognizing Textual Entailment (binary: entailment vs not_entailment)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {"not_entailment": "False", "entailment": "True"}
@@ -113,6 +152,7 @@ class RTEDataset(TextClassificationDataset):
 
 
 class CBDataset(TextClassificationDataset):
+    """CB: CommitmentBank natural language inference dataset."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -136,12 +176,14 @@ class CBDataset(TextClassificationDataset):
 
 
 class SST2Dataset(TextClassificationDataset):
+    """SST-2: Sentiment analysis (binary)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {"0": "negative", "1": "positive"}
 
 
 class TRECDataset(TextClassificationDataset):
+    """TREC: Question classification (6-way)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -155,6 +197,7 @@ class TRECDataset(TextClassificationDataset):
 
 
 class AGNewsDataset(TextClassificationDataset):
+    """AGNews: Topic classification (4-way)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -166,6 +209,7 @@ class AGNewsDataset(TextClassificationDataset):
 
 
 class DBPediaDataset(TextClassificationDataset):
+    """DBPedia: Ontology classification (14-way)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -187,6 +231,7 @@ class DBPediaDataset(TextClassificationDataset):
 
 
 class SubjDataset(TextClassificationDataset):
+    """Subjectivity dataset: subjective vs objective sentences."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -196,6 +241,7 @@ class SubjDataset(TextClassificationDataset):
 
 
 class MRDataset(TextClassificationDataset):
+    """MR: Movie review sentiment classification (binary)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -205,6 +251,7 @@ class MRDataset(TextClassificationDataset):
 
 
 class SST5Dataset(TextClassificationDataset):
+    """SST-5: Fine-grained sentiment classification (5-way)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -217,6 +264,7 @@ class SST5Dataset(TextClassificationDataset):
 
 
 class MPQADataset(TextClassificationDataset):
+    """MPQA: Opinion polarity dataset (binary)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
@@ -226,6 +274,7 @@ class MPQADataset(TextClassificationDataset):
 
 
 class CRDataset(TextClassificationDataset):
+    """CR: Customer review sentiment dataset (binary)."""
     def __init__(self, path, prompt_template="{input_text} {separator} {output_text}"):
         super().__init__(path, prompt_template)
         self.label_mapping = {
