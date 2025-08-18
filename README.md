@@ -30,14 +30,27 @@ This code adapts their framework to:
 ## Repository Structure
 
 ```
-├── main.py          # Entry point for experiments
-├── run.sh           # Example execution script
-├── datasets/        # Data loading utilities
-├── utils/           # Helper functions
+├── main.py                                       # Entry point for experiments
+├── run.sh                                        # Example execution script
+├── datasets/                                     # Data loading utilities
+├── utils/                                        # Helper functions
+├── analyze_robustness.py                         # Analyze separator robustness across seeds
+├── requirements.txt             # Python dependencies
 ├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments
-├── separator_logs_[model_name]/         # Top 5 separators for an experiment, with training and testing score
+├── separator_logs_[model_name]/                  # Top 5 separators for an experiment, with training and testing score
 └── README.md        # This file
 ```
+
+## Installation
+
+Create a virtual environment and install dependencies:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
 
 ## Run an experiment
 
@@ -53,6 +66,12 @@ python3 main.py \
   --seed 1 \
   --dataset sst2
 ```
+
+## Robustness Analysis
+
+The script `analyze_robustness.py` evaluates separator robustness across seeds and perturbations (e.g., synonym substitution, insertion, deletion).
+
+It loads saved `pkl` results, aggregates them across multiple seeds, and reports key statistics: Average, worst-case, best-case performance drops and most common vulnerabilities across perturbation modes.
 
 ## Command-Line Arguments
 
