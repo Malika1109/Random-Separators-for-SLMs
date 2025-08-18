@@ -576,14 +576,6 @@ def analyze_robustness_across_seeds(seeds_results: Dict[int, Dict]) -> Dict:
         'most_common_vulnerability': max(vulnerability_counts.items(), key=lambda x: x[1]) if vulnerability_counts else ('None', 0)
     }
     
-    # Print summary
-    print(f"\n{'='*80}")
-    print("OVERALL ROBUSTNESS STATISTICS")
-    print(f"{'='*80}")
-    print(f"Average Drop:    {overall_stats['mean_avg_drop']:.3f} ± {overall_stats['std_avg_drop']:.3f}")
-    print(f"Worst-Case Drop: {overall_stats['mean_worst_drop']:.3f} ± {overall_stats['std_worst_drop']:.3f}")
-    print(f"Best-Case Drop:  {overall_stats['mean_best_drop']:.3f} ± {overall_stats['std_best_drop']:.3f}")
-    print(f"Most Vulnerable Mode: {overall_stats['most_common_vulnerability'][0]} ({overall_stats['most_common_vulnerability'][1]} cases)")
     
     return overall_stats
 
