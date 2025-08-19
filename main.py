@@ -368,6 +368,7 @@ def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym", b
     return " ".join(perturbed)
 
 
+
 def test_separator_stability(
         top_separators: List[Dict],
         model,
@@ -533,6 +534,7 @@ def process_perturbation_results(results: Dict) -> Dict:
         }
     
     return processed
+
 
 def analyze_robustness_across_seeds(seeds_results: Dict[int, Dict]) -> Dict:
     """Analyze robustness results across multiple seeds."""
@@ -1056,6 +1058,10 @@ def main(args):
         import pickle
         with open(f'robustness_results_{dataset_name}_{optimization_mode}_{seed}_{safe_model_name}.pkl', 'wb') as f:
             pickle.dump(processed, f)
+
+
+    
+
 
 
 if __name__ == "__main__":

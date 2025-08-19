@@ -3,8 +3,8 @@ import pickle
 
 # Load all  saved results
 seeds_results = {}
-dataset_name = "asset"
-optimization_mode = "random_wo_context" 
+dataset_name = "sst5"
+optimization_mode = "random_with_context" 
 safe_model_name = "Qwen__Qwen2.5-0.5B"
 
 for seed in [1,2,3,4,5]:

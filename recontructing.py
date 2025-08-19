@@ -526,4 +526,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     utils.set_random_seed(args.seed)
-    main(args) how to integrate SmolLM2
+    main(args) 
