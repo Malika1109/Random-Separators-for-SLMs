@@ -97,6 +97,10 @@ This repository builds from the original implementation by Lu et al.
    * **ROUGE-L F1** for SAMSum
    * **SARI** for ASSET
 
+## Reproducability
+
+All experiments were carried out on NVIDIA A16 GPU. All reported results are averages across seeds 1-5 for robust evaluation. 
+
 ## Citation
 
 If you use this code, please cite the original work by Lu et al.:
