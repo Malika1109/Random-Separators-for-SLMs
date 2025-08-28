@@ -13,13 +13,13 @@ from sampling_poisson_disk import poissondisk_separators
 from sampling_halton import halton_separators
 from sampling_sobol import sobol_separators
 from bayesian import BayesianSeparatorOptimizer
-
-import optuna
+ 
+import optuna 
 import utils
 
 transformers.logging.set_verbosity_error()
 
-
+ 
 generator = transformers.pipeline('text-generation', model='gpt2')
 
 def hf_generate(prompt: str, num_return: int = 3):
