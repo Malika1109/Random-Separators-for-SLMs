@@ -13,7 +13,7 @@ sampling_sobol.py
 sampling_poisson_disk.py
 sampling_halton.py
 reconstructing.py
-pos.py
+evolutionary_pos.py
 map_elites.py
 lhs_with_and_without_context.py
 latin_hypercube.py

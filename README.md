@@ -99,7 +99,7 @@ This repository builds from the original implementation by Lu et al.
 
 ## Reproducability
 
-All experiments were carried out on NVIDIA A16 GPU. All reported results are averages across seeds 1-5 for robust evaluation. 
+All experiments were carried out on NVIDIA A16 GPU. All reported results are averages across seeds 1-5 for robust evaluation. The results were reported using context_shot_size = 1, num_random_draw = 160 and corpus_size = 64. 
 
 ## Citation
 

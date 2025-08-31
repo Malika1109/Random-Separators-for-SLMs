@@ -1,13 +1,8 @@
-# token_aware_evolution.py
-# SeparatorEvolutionV2
-
 import torch
 import random
 import numpy as np
 from typing import List, Callable, Tuple
 from transformers import PreTrainedTokenizer, PreTrainedModel
-
-# guided_separator_evolution.py (full EvoPrompt-style for separators)
 
 import os
 
@@ -37,7 +32,30 @@ from nltk import pos_tag, word_tokenize
 #nltk.download('averaged_perceptron_tagger')
 
 
+"""
+Initial experimental implementation of POS-aware evolutionary optimization for separator generation.
+Left to future work to develop these ideas fully.
 
+This class (`POSAwareSeparatorEvolution`) evolves random separators 
+guided by part-of-speech (POS) structures. The separators are constructed 
+from a POS-defined vocabulary and iteratively improved via 
+mutation, crossover, and evaluation.
+
+Key ideas:
+- Each separator is a sequence of tokens corresponding to a target POS pattern 
+  (e.g., ["NOUN", "VERB", "ADJ"]).
+- Valid candidates are sampled from a WordNet-derived vocabulary tagged with POS.
+- Evolutionary operators:
+    - Mutation: Replace some tokens with alternatives from the same POS category.
+    - Crossover: Mix tokens from two parent candidates to produce a child.
+- Fitness function:
+    - Separators are scored via `evaluate_fn`, which should be provided externally.
+    - Robustness is built-in: each separator is perturbed, and average performance is used.
+
+This method can be plugged into the separator search framework in `main.py` 
+by adding an optimization mode (e.g., `--optimization_mode pos_evolution`) 
+that instantiates `POSAwareSeparatorEvolution` and calls `evolve()`.
+"""
 
 class POSAwareSeparatorEvolution:
     def __init__(self, 
@@ -54,7 +72,9 @@ class POSAwareSeparatorEvolution:
         self.pos_vocab = self.build_pos_vocab()
 
     def build_pos_vocab(self) -> dict:
-        print("here")
+        """
+        Build a POS-tagged vocabulary from WordNet words.
+        """
         words = [w.replace('_', ' ') for w in list(set(wordnet.words()))[:50000]]
         tagged = pos_tag(words)
         pos_vocab = {
@@ -73,7 +93,9 @@ class POSAwareSeparatorEvolution:
         return pos_vocab
 
     def is_valid_pos_sequence(self, text: str, target_pos: List[str]) -> bool:
-        print("here2")
+        """
+        Check if a candidate text matches the required POS structure.
+        """
         tagged = pos_tag(word_tokenize(text))
         tag_map = {"JJ": "ADJ", "NN": "NOUN", "NNS": "NOUN", "VB": "VERB", "RB": "ADV"}
         simplified = []
@@ -87,7 +109,9 @@ class POSAwareSeparatorEvolution:
         return simplified == target_pos
 
     def initialize_population(self, pop_size: int) -> List[List[int]]:
-        print("here3")
+        """
+        Initialize a population of candidate separators following the target POS structure.
+        """
         population = []
         while len(population) < pop_size:
             tokens = []
@@ -100,7 +124,10 @@ class POSAwareSeparatorEvolution:
         return population
 
     def mutate(self, indiv: List[int]) -> List[int]:
-        print("here4")
+        """
+        Apply mutation: randomly replace some tokens with alternatives 
+        from the same POS category.
+        """
         words = self.tokenizer.convert_ids_to_tokens(indiv)
         mutated = []
         for i, pos in enumerate(self.pos_structure):
@@ -117,7 +144,9 @@ class POSAwareSeparatorEvolution:
         return self.tokenizer.encode(mutated_text, add_special_tokens=False)
 
     def crossover(self, p1: List[int], p2: List[int]) -> List[int]:
-        print("here5")
+        """
+        Apply crossover: combine tokens from two parents to create a child separator.
+        """
         if not p1 or not p2:
             return p1.copy()
         child_tokens = []
@@ -136,7 +165,10 @@ class POSAwareSeparatorEvolution:
         return self.tokenizer.encode(child_text, add_special_tokens=False)
 
     def evaluate_separator(self, separator_ids: List[int]) -> float:
-        print("here6")
+        """
+        Evaluate a separator by decoding it, checking its POS structure,
+        and scoring it using the provided evaluation function.
+        """
         key = tuple(separator_ids)
         if key in self.evaluated_cache:
             return self.evaluated_cache[key]
@@ -167,7 +199,12 @@ class POSAwareSeparatorEvolution:
         return final_score
 
     def evolve(self, generations: int = 10, pop_size: int = 20, elite_size: int = 4) -> Tuple[str, float]:
-        print("here7")
+        """
+        Run the evolutionary search loop:
+        - Initialize population
+        - Iteratively apply evaluation, selection, mutation, and crossover
+        - Return best-performing separator after all generations
+        """
         population = self.initialize_population(pop_size)
         for gen in range(generations):
             scored = [(self.evaluate_separator(indiv), indiv) for indiv in population]
@@ -187,104 +224,3 @@ class POSAwareSeparatorEvolution:
 
 
 
-# this one is very good, above one is same, just minor code changes for different separators across
-# gen which didnt work
-""" class POSAwareSeparatorEvolution:
-    def __init__(self, 
-                 model: PreTrainedModel,
-                 tokenizer: PreTrainedTokenizer,
-                 evaluate_fn: Callable[[str], float]):
-        self.model = model
-        self.tokenizer = tokenizer
-        self.evaluate_fn = evaluate_fn
-        self.embedding_matrix = model.get_input_embeddings().weight.detach()
-        self.evaluated_cache = {}
-        self.pos_structure = ["NOUN", "VERB"]
-        self.pos_vocab = self.build_pos_vocab()
-
-    def build_pos_vocab(self) -> dict:
-        print("Building POS vocabulary...")
-        words = list(wordnet.words())[:10000]  # Limit for speed
-        pos_vocab = {"ADJ": [], "NOUN": [], "VERB": [], "ADV": [], "PUNCT": [".", "!", ",", ":", ";"]}
-        tagged = nltk.pos_tag(words)
-
-        for word, tag in tagged:
-            if tag.startswith('JJ'):
-                pos_vocab["ADJ"].append(word)
-            elif tag.startswith('NN'):
-                pos_vocab["NOUN"].append(word)
-            elif tag.startswith('VB'):
-                pos_vocab["VERB"].append(word)
-            elif tag.startswith('RB'):
-                pos_vocab["ADV"].append(word)
-
-        return pos_vocab
-
-    def initialize_population(self, pop_size: int) -> List[List[int]]:
-        print("Initializing population...")
-        population = []
-        for _ in range(pop_size):
-            tokens = ["The"]
-            for pos in self.pos_structure:
-                candidates = self.pos_vocab.get(pos, ["-"])
-                tokens.append(random.choice(candidates))
-            text = " ".join(tokens)
-            ids = self.tokenizer.encode(text, add_special_tokens=False)
-            population.append(ids)
-        return population
-
-    def mutate(self, indiv: List[int]) -> List[int]:
-        print("Mutating individual...")
-        tokens = self.tokenizer.convert_ids_to_tokens(indiv)
-        mutated_tokens = [tokens[0]]  # Preserve "The"
-        for i, token in enumerate(tokens[1:], start=1):
-            if random.random() < 0.3:
-                pos = self.pos_structure[(i - 1) % len(self.pos_structure)]
-                replacement = random.choice(self.pos_vocab.get(pos, [token]))
-                mutated_tokens.append(replacement)
-            else:
-                mutated_tokens.append(token)
-        mutated_text = " ".join(mutated_tokens)
-        return self.tokenizer.encode(mutated_text, add_special_tokens=False)
-
-    def crossover(self, p1: List[int], p2: List[int]) -> List[int]:
-        print("Crossover between two individuals...")
-        if len(p1) < 2 or len(p2) < 2:
-            return p1.copy()
-        cut1 = random.randint(1, len(p1) - 1)
-        cut2 = random.randint(1, len(p2) - 1)
-        return p1[:cut1] + p2[cut2:]
-
-    def evaluate_separator(self, separator_ids: List[int]) -> float:
-        print("Evaluating separator...")
-        key = tuple(separator_ids)
-        if key in self.evaluated_cache:
-            return self.evaluated_cache[key]
-        text = self.tokenizer.decode(separator_ids)
-        score = self.evaluate_fn(text)
-        self.evaluated_cache[key] = score
-        return score
-
-    def evolve(self, generations: int = 10, pop_size: int = 20, elite_size: int = 4) -> Tuple[str, float]:
-        print("Evolving population...")
-        population = self.initialize_population(pop_size)
-        for gen in range(generations):
-            scored = [(self.evaluate_separator(indiv), indiv) for indiv in population]
-            scored.sort(key=lambda x: x[0], reverse=True)
-            elites = [indiv for _, indiv in scored[:elite_size]]
-
-            new_population = elites.copy()
-            while len(new_population) < pop_size:
-                p1 = random.choice(elites)
-                p2 = random.choice(elites)
-                child = self.crossover(p1, p2)
-                child = self.mutate(child)
-                new_population.append(child)
-            population = new_population
-
-            best_score, best_indiv = scored[0]
-            print(f"Gen {gen+1}: Best={best_score:.3f}, Separator='{self.tokenizer.decode(best_indiv)}'")
-
-        final_best_key = max(self.evaluated_cache.items(), key=lambda x: x[1])[0]
-        return self.tokenizer.decode(final_best_key), self.evaluated_cache[final_best_key]
- """

@@ -118,6 +118,18 @@ class TextClassificationDataset:
         )
 
     def __getitem__(self, idx, include_output=False):
+        """
+        Retrieve a dataset instance.
+
+        Args:
+            idx (int): index of the instance
+            include_output (bool): whether to include the gold output in the prompt
+
+        Returns:
+            dict with keys:
+                - "prompt": formatted text with {separator} placeholder
+                - "output": gold reference output
+        """
         instance = self.data[idx]
         input_text = instance["sentence"]
         output_text = self.label_mapping[instance["label"]]
