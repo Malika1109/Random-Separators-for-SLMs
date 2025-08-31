@@ -1,6 +1,9 @@
 import numpy as np
 from scipy import stats
 
+# Script to plug in average drops fro a model-dataset pair and calculate skewness and kurtosis
+
+
 avg_drops = [
     # Seed 1
     18.403, 16.058, 11.447, 2.231, 9.169,

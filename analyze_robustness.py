@@ -1,6 +1,8 @@
 import main
 import pickle
 
+# Script to calculate robustness metrics across multiple random seeds
+
 # Load all  saved results
 seeds_results = {}
 dataset_name = "asset" #can be mpqa, sst5, trec and asset
