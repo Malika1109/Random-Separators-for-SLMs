@@ -5,9 +5,9 @@ import pickle
 
 # Load all  saved results
 seeds_results = {}
-dataset_name = "asset" #can be mpqa, sst5, trec and asset
-optimization_mode = "random_wo_context" # random_vocab for mpqa, random_with_context for sst5,  random_wo_context for trec and asset
-safe_model_name = "Qwen__Qwen2.5-0.5B"  #can be gpt2, EleutherAI__pythia-410m, Qwen__Qwen2.5-0.5B, EleutherAI__gpt-neo-125M, HuggingFaceTB__SmolLM2-360M
+dataset_name = "sst5" #can be mpqa, sst5, trec and asset
+optimization_mode = "random_with_context" # random_vocab for mpqa, random_with_context for sst5,  random_wo_context for trec and asset
+safe_model_name = "gpt2"  #can be gpt2, EleutherAI__pythia-410m, Qwen__Qwen2.5-0.5B, EleutherAI__gpt-neo-125M, HuggingFaceTB__SmolLM2-360M
    
 for seed in [1,2,3,4,5]:
     with open(f'robustness_results_{dataset_name}_{optimization_mode}_{seed}_{safe_model_name}.pkl', 'rb') as f:
