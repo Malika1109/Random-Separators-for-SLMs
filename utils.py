@@ -10,7 +10,7 @@ import numpy as np
 from tqdm import tqdm
 from collections import defaultdict
 
-
+# Code adapted from https://github.com/yaolu/random-prompt
 # -------------------------------
 # Directory and file utilities
 # -------------------------------

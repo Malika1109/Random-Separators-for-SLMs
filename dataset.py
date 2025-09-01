@@ -89,6 +89,7 @@ class ASSETDataset(TextGenerativeDataset):
 # ====================================
 # Base class for classification datasets
 # ====================================
+# Code adapted from https://github.com/yaolu/random-prompt
 class TextClassificationDataset:
     """
     Generic dataset class for classification tasks.

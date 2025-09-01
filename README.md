@@ -1,7 +1,7 @@
 
 # Random Separators for Small Language Models
 
-This repository contains the code for my MSc dissertation experiments on **prompt optimisation for Small Language Models (SLMs)** using **random separator sampling**.
+This repository contains the code for my MSc Individual Project experiments on **prompt optimisation for Small Language Models (SLMs)** using **random separator sampling**.
 
 It builds on and extends the methodology from:
 > **Strings from the Library of Babel: Random Sampling as a Strong Baseline for Prompt Optimisation**  
@@ -34,12 +34,15 @@ This code adapts their framework to:
 ├── run.sh                                        # Example execution script
 ├── datasets/                                     # Data loading utilities
 ├── utils/                                        # Helper functions
-├── analyze_robustness.py                         # Analyze separator robustness across seeds
+├── analyze_robustness.py                         # Analyze separator robustness across seeds for SST-5 (random with context), ASSET, TREC (random without context) and MPQA (random vocab)
 ├── requirements.txt                              # Python dependencies
-├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments
+├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments and plots showing the distribution of accuracy on training set across separators. the plots indicate the accuracies of baselines separators, the mean accuracy of all seperators, and the accuracy of the top 5% of separators on the training set. 
 ├── separator_logs_[model_name]/                  # Top 5 separators for an experiment, with training and testing score
+├──robustness_results_[model_name]_[dataset]_[optimisation-mode]_[seed]_[model].pkl   # Saved robustness results on SST-5 (random with context), ASSET, TREC (random without context) and MPQA (random vocab), which can be plugged into analyze_robustness.py
 └── README.md        # This file
 ```
+
+
 
 ## Installation
 
