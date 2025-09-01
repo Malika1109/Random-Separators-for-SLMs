@@ -72,7 +72,7 @@ python3 main.py \
 
 ## Robustness Analysis
 
-The script `analyze_robustness.py` evaluates separator robustness across seeds and perturbations (e.g., synonym substitution, insertion, deletion) with the command ```bash python3 analyze_robustness.py```.
+The script `analyze_robustness.py` evaluates separator robustness across seeds and perturbations (e.g., synonym substitution, insertion, deletion) with the command ```python3 analyze_robustness.py```.
 
 Robustness results can be produced for the following configurations: SST-5 (random with context), ASSET, TREC (random without context), MPQA (random vocab)
 
