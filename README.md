@@ -70,14 +70,6 @@ python3 main.py \
   --dataset sst2
 ```
 
-## Robustness Analysis
-
-The script `analyze_robustness.py` evaluates separator robustness across seeds and perturbations (e.g., synonym substitution, insertion, deletion) with the command ```python3 analyze_robustness.py```.
-
-Robustness results can be produced for the following configurations: SST-5 (random with context), ASSET, TREC (random without context), MPQA (random vocab)
-
-It loads saved `pkl` results, aggregates them across multiple seeds, and reports key statistics: Average, worst-case, best-case performance drops and most common vulnerabilities across perturbation modes.
-
 ## Command-Line Arguments
 
 | Argument | Description | Example |
@@ -90,9 +82,15 @@ It loads saved `pkl` results, aggregates them across multiple seeds, and reports
 | `--seed` | Random seed for reproducibility | `1` |
 | `--dataset` | Dataset name: `sst2`, `sst5`, `mr`, `subj`, `agnews`, `trec`, `mpqa`, `samsum`, `asset` | `sst2` |
 
-## Implementation Notes
+## Robustness Analysis
 
-This repository builds from the original implementation by Lu et al.
+The script `analyze_robustness.py` evaluates separator robustness across seeds and perturbations (e.g., synonym substitution, insertion, deletion) with the command ```python3 analyze_robustness.py```.
+
+Robustness results can be produced for the following configurations: SST-5 (random with context), ASSET, TREC (random without context), MPQA (random vocab)
+
+It loads saved `pkl` results, aggregates them across multiple seeds, and reports key statistics: Average, worst-case, best-case performance drops and most common vulnerabilities across perturbation modes.
+
+## Implementation Notes
 
 * Code is extended to **SLM-specific evaluation**
 * **Generation tasks** are added
