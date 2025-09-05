@@ -327,6 +327,8 @@ def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym", b
         Perturbed separator string
     """
     # Stable, order-independent seed
+    # For purpose of reproducibility across runs we use a hash-based seed
+    # If you want non-deterministic perturbations, set rng to random.Random()
     seed_val = stable_seed(separator, mode, base_seed=base_seed)
     rng = random.Random(seed_val)
 
