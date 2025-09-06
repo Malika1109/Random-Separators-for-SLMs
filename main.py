@@ -21,6 +21,7 @@ from evaluate import load
 from rouge import Rouge
 from sacremoses import MosesTokenizer
 from transformers import AutoTokenizer, AutoModelForCausalLM
+import hashlib
 
 # Local imports
 import utils # local utility file for loading datasets and setting seed
@@ -37,9 +38,6 @@ nltk.download('maxent_ne_chunker_tab', quiet=True)
 transformers.logging.set_verbosity_error()
 print("Starting the script...")
 
-from rouge import Rouge
-from sacremoses import MosesTokenizer
-import hashlib
 
 def cal_rouge(output_texts: List[str], ref_texts: List[str], 
               tokenizer: MosesTokenizer, rouge: Rouge) -> tuple:
@@ -172,6 +170,11 @@ def compute_accuracy(predictions: List[str], labels: List[str]) -> float:
             correct += 1
     return correct / len(labels)
 
+
+# The broad ideas behind generating random separators was adapted
+# from Lu et al. (2024), *Strings from the Library of Babel: Random Sampling 
+# as a Strong Baseline for Prompt Optimisation*. 
+# However, all code in this file is my own implementation and differs from theirs.
 
 def generate_random_vocab_separator(min_separator_length: int, 
                                    max_separator_length: int, tokenizer, 
@@ -340,7 +343,7 @@ def perturb_separator(separator: str, vocab: List[str], mode: str = "synonym", b
     perturbed = words.copy()
 
     if mode == "replace":
-        # Sort to make candidate order deterministic
+        # Sort to make candidate order deterministic for reproducabilty - if determinism is not wanted in perturbations, do not sort the vocabulary
         candidates = sorted([w for w in vocab if abs(len(w) - len(words[idx])) <= 2])
         if candidates:
             perturbed[idx] = rng.choice(candidates)
