@@ -171,7 +171,7 @@ def compute_accuracy(predictions: List[str], labels: List[str]) -> float:
     return correct / len(labels)
 
 
-# The broad ideas behind generating random separators was adapted
+# The broad idea behind generating random separators was adapted
 # from Lu et al. (2024), *Strings from the Library of Babel: Random Sampling 
 # as a Strong Baseline for Prompt Optimisation*. 
 # However, all code in this file is my own implementation and differs from theirs.
