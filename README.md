@@ -12,7 +12,9 @@ It builds on and extends the methodology from:
 
 ## Overview
 
-The original Lu et al. work evaluated random separator strategies **only on Large Language Models (LLMs)** and **classification tasks**.
+This project investigates whether random separators, previously shown to work on LLMs, can also improve performance in resource-constrained Small Language Models (SLMs). We evaluate across classification, generation, and robustness tasks to explore both effectiveness and reliability.
+
+The original work of Lu et al. evaluated random separator strategies **only on Large Language Models (LLMs)** and **classification tasks**.
 
 This code adapts their framework to:
 - **Small Language Models** (< 1B parameters), e.g., `gpt2`, `EleutherAI/gpt-neo-125M`, `Qwen2.5-0.5B`, etc.
@@ -25,6 +27,8 @@ This code adapts their framework to:
   - `random_with_context` — model-generated separator with few-shot context
   - Baselines (e.g., `"Answer:"`)
 
+
+
 ---
 
 ## Repository Structure
@@ -36,7 +40,7 @@ This code adapts their framework to:
 ├── utils/                                        # Helper functions
 ├── analyze_robustness.py                         # Analyze separator robustness across seeds for SST-5 (random with context), ASSET, TREC (random without context) and MPQA (random vocab)
 ├── requirements.txt                              # Python dependencies
-├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments and plots showing the distribution of accuracy on training set across separators. the plots indicate the accuracies of baselines separators, the mean accuracy of all seperators, and the accuracy of the top 5% of separators on the training set. 
+├── separator_accuracy_distribution_[model_name]/ # Saved summary statistics for  experiments and plots showing the distribution of accuracy on training set across separators. The plots indicate the accuracies of baselines separators, the mean accuracy of all seperators, and the accuracy of the top 5% of separators on the training set. 
 ├── separator_logs_[model_name]/                  # Top 5 separators for an experiment, with training and testing score
 ├──robustness_results_[model_name]_[dataset]_[optimisation-mode]_[seed]_[model].pkl   # Saved robustness results on SST-5 (random with context), ASSET, TREC (random without context) and MPQA (random vocab), which can be plugged into analyze_robustness.py
 └── README.md        # This file
@@ -106,7 +110,7 @@ All experiments were carried out on NVIDIA A16 GPU. All reported results are ave
 
 ## Citation
 
-If you use this code, please cite the original work by Lu et al.:
+If you use this code, please cite this repository and the original work by Lu et al.:
 
 ```bibtex
 @inproceedings{lu-etal-2024-strings,

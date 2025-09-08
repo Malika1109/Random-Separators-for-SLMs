@@ -888,7 +888,7 @@ def main(args):
         print(f"Top 5% Threshold: {top_5_threshold:.3f}")
         print(f"Number of Top 5% Separators: {df['top_5_percent'].sum()} / {len(df)}")
 
-        # Plot histogram of accuracy distribution
+        # Plot histogram of accuracy distribution on training set
         plt.figure(figsize=(10, 6))
         plt.hist(df["accuracy"], bins=20, color="skyblue", edgecolor="black")
         plt.axvline(mean_acc, color='red', linestyle='--', label=f'Mean: {mean_acc:.2f}')
@@ -1001,7 +1001,7 @@ def main(args):
         print(f"average test accuracy: {avg_test_score:.3f}")
  
 
-    # --- Save summary statistics ---
+    # --- Save summary statistics in  separator_accuracy_distribution_{model_name} ---
     if not is_generation_task:
         summary_stats = {
             "seed": seed,
