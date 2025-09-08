@@ -14,9 +14,8 @@ It builds on and extends the methodology from:
 
 This project investigates whether random separators, previously shown to work on LLMs, can also improve performance in resource-constrained Small Language Models (SLMs). We evaluate across classification, generation, and robustness tasks to explore both effectiveness and reliability.
 
-The original work of Lu et al. evaluated random separator strategies **only on Large Language Models (LLMs)** and **classification tasks**.
 
-This code adapts their framework to:
+This code adapts the framework of Lu et al. (2024) to:
 - **Small Language Models** (< 1B parameters), e.g., `gpt2`, `EleutherAI/gpt-neo-125M`, `Qwen2.5-0.5B`, etc.
 - **Both classification and generation tasks**  
   - Classification: SST-2, SST-5, MR, Subj, AG News, TREC, MPQA  
@@ -26,6 +25,13 @@ This code adapts their framework to:
   - `random_wo_context` — model-generated separator without context
   - `random_with_context` — model-generated separator with few-shot context
   - Baselines (e.g., `"Answer:"`)
+- **Robustness testing** through perturbation analysis (replacement, insertion deletion, shuffling) to evaluate stability of high-performing separators.
+
+This work advances the study of prompt optimisation in three ways:
+
+1. Extending to SLMs — providing the first systematic analysis of random separators below 1B parameters.
+2. Broadening scope — applying separators beyond classification to generative tasks like summarisation and simplification.
+3. Introducing robustness analysis — systematically probing separator stability under perturbations to assess reliability.
 
 
 
