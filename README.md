@@ -107,7 +107,7 @@ It loads saved `pkl` results, aggregates them across multiple seeds, and reports
 * **Cross-validation** for classification and **robustness testing** are included
 * All metrics for classification are **exact match accuracy**
 * Generation tasks use:
-   * **ROUGE-L F1** for SAMSum
+   * **ROUGE-L** for SAMSum
    * **SARI** for ASSET
 
 ## Reproducability
