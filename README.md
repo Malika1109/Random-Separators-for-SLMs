@@ -112,7 +112,7 @@ It loads saved `pkl` results, aggregates them across multiple seeds, and reports
 
 ## Reproducability
 
-All experiments were carried out on NVIDIA A16 GPU. All reported results are averages across seeds 1-5 for robust evaluation. The results were reported using context_shot_size = 1, num_random_draw = 160 and corpus_size = 64. 
+All experiments were carried out on NVIDIA A16 GPU. Reported results are averaged across seeds 1-5 for robust evaluation. The results were reported using context_shot_size = 1, num_random_draw = 160 and corpus_size = 64. 
 
 ## Citation
 
