@@ -12,7 +12,7 @@ It builds on and extends the methodology from:
 
 ## Overview
 
-This project investigates whether random separators, previously shown to work on LLMs, can also improve performance in resource-constrained Small Language Models (SLMs). We evaluate across classification, generation, and robustness tasks to explore both effectiveness and reliability.
+This project investigates whether random separators, previously shown to work on LLMs, can also improve performance in resource-constrained Small Language Models (SLMs).
 
 
 This code adapts the framework of Lu et al. (2024) to:
