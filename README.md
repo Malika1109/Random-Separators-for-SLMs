@@ -52,7 +52,7 @@ This work advances the study of prompt optimisation in three ways:
 └── README.md        # This file
 ```
 
-When you run an experiment, the output logs will depend on the chosen model, dataset, and optimisation mode specified in the command-line arguments. The output reports statistics such as the mean training score across all sampled separators, the top 5 separators and their training and test scores and saves detailed results to .csv files and accuracy distribution plots to .png files as described in the structure above. Additional output logs show how these top separators respond to perturbations (replacement, insertion, deletion, shuffling), with side-by-side comparisons of original versus perturbed accuracies.
+When you run an experiment, the output logs will depend on the chosen model, dataset, and optimisation mode specified in the command-line arguments. The output reports statistics such as the mean training score across all sampled separators, the top 5 separators and their training and test scores. Additional output logs show how these top separators respond to perturbations (replacement, insertion, deletion, shuffling), with side-by-side comparisons of original versus perturbed accuracies.
 
 Saved results are organised into folders:  
 
