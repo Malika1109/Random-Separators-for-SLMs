@@ -52,9 +52,33 @@ This work advances the study of prompt optimisation in three ways:
 └── README.md        # This file
 ```
 
+When you run an experiment, the output logs will depend on the chosen model, dataset, and optimisation mode specified in the command-line arguments. The script reports statistics such as the mean training score across all sampled separators, the top 5 separators and their training and test scores and saves detailed results to .csv files and accuracy distribution plots to .png files. Additional logs show how these top separators respond to perturbations (replacement, insertion, deletion, shuffling), with side-by-side comparisons of original versus perturbed accuracies.
+
+Saved results are organised into folders:  
+
+- **`separator_accuracy_distribution_[model_name]/`**  
+  - **Classification tasks**: summary statistics include:  
+    - `seed`, `optimization_mode`, `dataset`, `average_train_accuracy`,  
+      `baseline_accuracy`, `percent_better_than_baseline` (% of separators that performed better than baseline in training set),  
+      `num_better_than_baseline`, `total_separators`,  
+      `average_test_accuracy` (average score of top 5 separators on test set), `baseline_test_accuracy`.  
+  - **Generative tasks**: summary statistics include log the seed, optimisation mode, dataset, total separators and the average training and test scores of the separators
+  - Distribution plots (`.png`) showing separator performance: baseline accuracies, mean of all separators, and top 5% threshold.  
+
+- **`separator_logs_[model_name]/`**  
+  - Logs of the top 5 separators for each experiment with detailed training and test scores.  
+
+- **`robustness_results_[model_name]_[dataset]_[optimisation-mode]_[seed]_[model].pkl`**  
+  - Pickled robustness results that can be loaded into `analyze_robustness.py` for aggregation and analysis.  
 
 
 ## Installation
+
+Clone the repository and navigate into it:
+```bash
+git clone https://github.com/Malika1109/Random-Separators-for-SLMs.git
+cd Random-Separators-for-SLMs
+```
 
 Create a virtual environment and install dependencies:
 
