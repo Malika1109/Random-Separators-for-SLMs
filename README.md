@@ -60,9 +60,7 @@ Saved results are organised into folders:
   - Summary statistics for experiments are saved as `.csv` files, e.g:
     `separator_accuracy_distribution_[model_name]/summary_stats_[optimisation-mode]_[seed]_[dataset].csv`
     For Classification tasks, summary statistics include    
-    - `seed`, `optimization_mode`, `dataset`, `average_train_accuracy` (of 160 separators on training set),  
-      `baseline_accuracy` (accuracy of baseline on training set), `percent_better_than_baseline` (% of separators that performed better than baseline in training set),  
-      `num_better_than_baseline` (no. of separators (out of 160) better than baseline in training set), `total_separators`,  
+    - `seed`, `optimization_mode`, `dataset`, `average_train_accuracy` (of 160 separators on training set),  `baseline_accuracy` (accuracy of baseline on training set), `percent_better_than_baseline` (% of separators that performed better than baseline in training set), `num_better_than_baseline` (no. of separators (out of 160) better than baseline in training set), `total_separators`,  
       `average_test_accuracy` (average score of top 5 separators on test set), `baseline_test_accuracy` (score of baseline on test set).  
   - For Generative tasks, summary statistics include log the `seed`, `optimisation mode`, `dataset`, `total separators` and the `average training scores (of all 160) and test scores (of top 5) separators`
   - Distribution plots (`.png`) showing separator performance: baseline accuracies, mean of all separators, and top 5% threshold.  
