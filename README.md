@@ -128,7 +128,7 @@ It loads saved `pkl` results, aggregates them across multiple seeds, and reports
 
 ## Implementation Notes
 
-* Code is extended to **SLM-specific evaluation**
+* Code is changed to **SLM-specific evaluation**
 * **Generation tasks** are added
 * **Cross-validation** for classification and **robustness testing** are included
 * All metrics for classification are **exact match accuracy**
