@@ -62,8 +62,8 @@ Saved results are organised into folders:
     For Classification tasks, summary statistics include    
     - `seed`, `optimization_mode`, `dataset`, `average_train_accuracy`,  
       `baseline_accuracy`, `percent_better_than_baseline` (% of separators that performed better than baseline in training set),  
-      `num_better_than_baseline`, `total_separators`,  
-      `average_test_accuracy` (average score of top 5 separators on test set), `baseline_test_accuracy`.  
+      `num_better_than_baseline` (no. of separators better than baseline in training set), `total_separators`,  
+      `average_test_accuracy` (average score of top 5 separators on test set), `baseline_test_accuracy` (score of baseline on test set).  
   - For Generative tasks, summary statistics include log the `seed`, `optimisation mode`, `dataset`, `total separators` and the `average training and test scores of the separators`
   - Distribution plots (`.png`) showing separator performance: baseline accuracies, mean of all separators, and top 5% threshold.  
 
