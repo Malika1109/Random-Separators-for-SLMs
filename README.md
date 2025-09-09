@@ -70,7 +70,7 @@ Saved results are organised into folders:
 - **`separator_logs_[model_name]/`**  
   - Logs of the top 5 separators for each experiment with detailed training and test scores for each one.  
 
-- **`robustness_results_[model_name]_[dataset]_[optimisation-mode]_[seed]_[model].pkl`**  
+- **`robustness_results_[dataset]_[optimisation-mode]_[seed]_[model].pkl`**  
   - Pickled robustness results that can be loaded into `analyze_robustness.py` for aggregation and analysis.  
 
 
