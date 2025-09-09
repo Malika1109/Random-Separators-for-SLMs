@@ -59,7 +59,8 @@ Saved results are organised into folders:
 - **`separator_accuracy_distribution_[model_name]/`**  
   - Summary statistics for experiments are saved as `.csv` files, e.g:
     `separator_accuracy_distribution_[model_name]/summary_stats_[optimisation-mode]_[seed]_[dataset].csv`
-    For Classification tasks**, summary statistics include:  
+
+    For Classification tasks, summary statistics include:  
     - `seed`  
     - `optimization_mode`  
     - `dataset`  
